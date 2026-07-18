@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Li Boutique - Catálogo Web</title>
+    <title>Aura Boutique - Catálogo Web</title>
     
     <!-- 1. Importamos Vue 3 directamente para que funcione sin instalaciones complejas -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
@@ -14,11 +14,12 @@
     <!-- 3. Estilos de Diseño (CSS) -->
     <style>
         :root {
-            --color-fondo: #EAE0C8;
-            --color-texto: #2b2b2b;
-            --color-acento: #d4a373;
-            --color-secundario: #f4ece2;
-            --color-gris: #5c5c5c;
+            /* Colores actualizados a tonos crema y arena */
+            --color-fondo: #FDFBF7;       /* Crema muy suave e iluminado para el fondo principal */
+            --color-texto: #2b2b2b;       /* Gris oscuro para el texto (legibilidad) */
+            --color-acento: #C8A97E;      /* Tono arena/dorado suave para los detalles y botones */
+            --color-secundario: #EFE6D5;  /* Crema un poco más oscuro para los fondos de las fotos */
+            --color-gris: #6d6d6d;
         }
 
         body {
@@ -81,7 +82,7 @@
         .filtros button.activo {
             background-color: var(--color-secundario);
             border-color: var(--color-acento);
-            color: var(--color-acento);
+            color: var(--color-texto); /* Texto oscuro para contrastar con el crema */
         }
 
         /* Cuadrícula de Ropa */
@@ -119,7 +120,7 @@
         .contenedor-imagen img {
             width: 100%;
             height: 100%;
-            object-fit: contain;
+            object-fit: cover;
             transition: transform 0.5s ease;
         }
 
@@ -162,6 +163,52 @@
             font-size: 1.2rem;
             color: var(--color-gris);
         }
+
+        /* NUEVO: Estilos del Pie de Página */
+        .pie-pagina {
+            background-color: var(--color-secundario);
+            color: var(--color-texto);
+            padding: 60px 20px 20px;
+            margin-top: 40px;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .footer-contenido {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+            gap: 30px;
+        }
+
+        .footer-seccion {
+            text-align: center;
+            min-width: 250px;
+        }
+
+        .footer-seccion h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--color-acento);
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .footer-seccion p {
+            margin: 5px 0;
+            font-size: 1rem;
+            color: var(--color-gris);
+        }
+
+        .footer-derechos {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            font-size: 0.9rem;
+            color: var(--color-gris);
+        }
     </style>
 </head>
 <body>
@@ -169,7 +216,7 @@
 <!-- 4. LA INTERFAZ DE VUE (Estructura HTML) -->
 <div id="app">
     <header>
-        <h1>Li Boutique</h1>
+        <h1>Aura Boutique</h1>
         <p>Elegancia y estilo en cada prenda</p>
     </header>
 
@@ -205,6 +252,39 @@
             Lo sentimos, aún no hemos subido prendas en esta categoría.
         </div>
     </main>
+
+    <!-- NUEVO: Pie de Página (Footer) -->
+    <footer class="pie-pagina">
+        <div class="footer-contenido">
+            <!-- Sección de Dirección -->
+            <div class="footer-seccion">
+                <h4>Visítanos</h4>
+                <p>Centro Comercial Principal, Local 12</p>
+                <p>Santiago de María, Usulután</p>
+                <p>El Salvador</p>
+            </div>
+
+            <!-- Sección de Horarios -->
+            <div class="footer-seccion">
+                <h4>Horario de Atención</h4>
+                <p>Lunes a Viernes: 9:00 AM - 6:00 PM</p>
+                <p>Sábados: 9:00 AM - 3:00 PM</p>
+                <p>Domingos: Cerrado</p>
+            </div>
+
+            <!-- Sección de Contacto -->
+            <div class="footer-seccion">
+                <h4>Contáctanos</h4>
+                <p>📱 WhatsApp: +503 7000-0000</p>
+                <p>📸 Instagram: @LiBoutique</p>
+                <p>🎵 TikTok: @LiBoutique</p>
+            </div>
+        </div>
+        
+        <div class="footer-derechos">
+            <p>&copy; 2026 Li Boutique. Todos los derechos reservados.</p>
+        </div>
+    </footer>
 </div>
 
 <!-- 5. LA LÓGICA DE VUE (JavaScript) -->
@@ -217,7 +297,7 @@
             const categoriaActual = ref('Todos');
 
             // Arreglo con los nombres de las categorías para los botones
-            const categorias = ['Todos', 'Vestidos', 'Trajes', 'Conjuntos', 'Pantalones y Palazzo', 'Camisas'];
+            const categorias = ['Todos', 'Vestidos', 'Trajes', 'Conjuntos', 'Pantalones', 'Camisas'];
 
             // NUESTRA BASE DE DATOS (Arreglo JSON con la ropa)
             const productos = ref([
@@ -247,16 +327,16 @@
                 {
                     id: 4,
                     nombre: 'Pantalón Palazzo Negro',
-                    categoria: 'Pantalones y Palazzo',
+                    categoria: 'Pantalones',
                     precio: '35.00',
-                    imagen: 'https://i.postimg.cc/3RysVV4N/images.jpg'
+                    imagen: 'https://placehold.co/600x800/e5dfd5/5c5c5c?text=Foto+Drive:+Pantalon'
                 },
                 {
                     id: 5,
                     nombre: 'Camisa Seda Blanca',
                     categoria: 'Camisas',
                     precio: '40.00',
-                    imagen: 'https://res.cloudinary.com/nhgpojiw/image/upload/f_auto,q_auto/d024600d5160874957841e6e426e65fb_ammczi'
+                    imagen: 'https://placehold.co/600x800/e5dfd5/5c5c5c?text=Foto+Drive:+Camisa'
                 },
                 {
                     id: 6,
