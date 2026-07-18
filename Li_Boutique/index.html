@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Li Boutique - Catálogo Web</title>
+    
+    <!-- 1. Importamos Vue 3 directamente para que funcione sin instalaciones complejas -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    
+    <!-- 2. Fuentes elegantes para darle estilo de Boutique -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- 3. Estilos de Diseño (CSS) -->
+    <style>
+        :root {
+            --color-fondo: #EAE0C8;
+            --color-texto: #2b2b2b;
+            --color-acento: #d4a373;
+            --color-secundario: #f4ece2;
+            --color-gris: #5c5c5c;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Lato', sans-serif;
+            background-color: var(--color-fondo);
+            color: var(--color-texto);
+        }
+
+        /* Encabezado */
+        header {
+            text-align: center;
+            padding: 60px 20px 30px;
+        }
+
+        header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            margin: 0;
+            color: var(--color-texto);
+            letter-spacing: 2px;
+        }
+
+        header p {
+            color: var(--color-gris);
+            font-size: 1.1rem;
+            margin-top: 10px;
+            font-weight: 300;
+        }
+
+        /* Navegación (Filtros por Categoría) */
+        .filtros {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .filtros button {
+            background-color: transparent;
+            border: 1px solid transparent;
+            padding: 10px 20px;
+            font-family: 'Lato', sans-serif;
+            font-size: 1rem;
+            color: var(--color-gris);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .filtros button:hover {
+            color: var(--color-acento);
+        }
+
+        .filtros button.activo {
+            background-color: var(--color-secundario);
+            border-color: var(--color-acento);
+            color: var(--color-acento);
+        }
+
+        /* Cuadrícula de Ropa */
+        .catalogo {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 40px;
+            padding: 0 40px 80px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Diseño de cada tarjeta de ropa */
+        .tarjeta-prenda {
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .tarjeta-prenda:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .contenedor-imagen {
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            background-color: var(--color-secundario);
+        }
+
+        .contenedor-imagen img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.5s ease;
+        }
+
+        .tarjeta-prenda:hover .contenedor-imagen img {
+            transform: scale(1.05);
+        }
+
+        .info-prenda {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .categoria-etiqueta {
+            font-size: 0.8rem;
+            color: var(--color-acento);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .info-prenda h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            margin: 0 0 10px 0;
+            font-weight: 600;
+        }
+
+        .precio {
+            font-size: 1.2rem;
+            color: var(--color-texto);
+            font-weight: 400;
+        }
+
+        .sin-resultados {
+            text-align: center;
+            grid-column: 1 / -1;
+            padding: 50px;
+            font-size: 1.2rem;
+            color: var(--color-gris);
+        }
+    </style>
+</head>
+<body>
+
+<!-- 4. LA INTERFAZ DE VUE (Estructura HTML) -->
+<div id="app">
+    <header>
+        <h1>Li Boutique</h1>
+        <p>Elegancia y estilo en cada prenda</p>
+    </header>
+
+    <!-- Botones de Categorías -->
+    <nav class="filtros">
+        <!-- v-for crea un botón por cada categoría en nuestra lista -->
+        <button 
+            v-for="categoria in categorias" 
+            :key="categoria"
+            @click="categoriaActual = categoria"
+            :class="{ activo: categoriaActual === categoria }"
+        >
+            {{ categoria }}
+        </button>
+    </nav>
+
+    <!-- Área del catálogo -->
+    <main class="catalogo">
+        <!-- v-for crea una tarjeta visual por cada prenda filtrada -->
+        <article v-for="prenda in productosFiltrados" :key="prenda.id" class="tarjeta-prenda">
+            <div class="contenedor-imagen">
+                <img :src="prenda.imagen" :alt="prenda.nombre" loading="lazy">
+            </div>
+            <div class="info-prenda">
+                <span class="categoria-etiqueta">{{ prenda.categoria }}</span>
+                <h3>{{ prenda.nombre }}</h3>
+                <span class="precio">${{ prenda.precio }}</span>
+            </div>
+        </article>
+
+        <!-- Mensaje si no hay prendas en la categoría seleccionada -->
+        <div v-if="productosFiltrados.length === 0" class="sin-resultados">
+            Lo sentimos, aún no hemos subido prendas en esta categoría.
+        </div>
+    </main>
+</div>
+
+<!-- 5. LA LÓGICA DE VUE (JavaScript) -->
+<script>
+    const { createApp, ref, computed } = Vue;
+
+    createApp({
+        setup() {
+            // Variable que guarda la categoría que el cliente está viendo (Por defecto "Todos")
+            const categoriaActual = ref('Todos');
+
+            // Arreglo con los nombres de las categorías para los botones
+            const categorias = ['Todos', 'Vestidos', 'Trajes', 'Conjuntos', 'Pantalones y Palazzo', 'Camisas'];
+
+            // NUESTRA BASE DE DATOS (Arreglo JSON con la ropa)
+            const productos = ref([
+                {
+                    id: 1,
+                    nombre: 'Vestido Midi Floral',
+                    categoria: 'Vestidos',
+                    precio: '45.00',
+                    // Aquí debes poner el enlace modificado de tu foto de Google Drive
+                    // Ejemplo: 'https://lh3.googleusercontent.com/d/1A2B3C4D5E6F...'
+                    imagen: 'https://placehold.co/600x800/e5dfd5/5c5c5c?text=Foto+Drive:+Vestido+1' 
+                },
+                {
+                    id: 2,
+                    nombre: 'Traje Sastre Beige',
+                    categoria: 'Trajes',
+                    precio: '120.00',
+                    imagen: 'https://placehold.co/600x800/e5dfd5/5c5c5c?text=Foto+Drive:+Traje'
+                },
+                {
+                    id: 3,
+                    nombre: 'Conjunto Lino Verano',
+                    categoria: 'Conjuntos',
+                    precio: '65.00',
+                    imagen: 'https://placehold.co/600x800/e5dfd5/5c5c5c?text=Foto+Drive:+Conjunto'
+                },
+                {
+                    id: 4,
+                    nombre: 'Pantalón Palazzo Negro',
+                    categoria: 'Pantalones y Palazzo',
+                    precio: '35.00',
+                    imagen: 'https://i.postimg.cc/3RysVV4N/images.jpg'
+                },
+                {
+                    id: 5,
+                    nombre: 'Camisa Seda Blanca',
+                    categoria: 'Camisas',
+                    precio: '40.00',
+                    imagen: 'https://res.cloudinary.com/nhgpojiw/image/upload/f_auto,q_auto/d024600d5160874957841e6e426e65fb_ammczi'
+                },
+                {
+                    id: 6,
+                    nombre: 'Vestido Noche Esmeralda',
+                    categoria: 'Vestidos',
+                    precio: '89.00',
+                    imagen: 'https://placehold.co/600x800/e5dfd5/5c5c5c?text=Foto+Drive:+Vestido+2'
+                }
+            ]);
+
+            // LA MAGIA DEL FILTRADO
+            // Esta función revisa qué botón se presionó y devuelve solo la ropa correspondiente
+            const productosFiltrados = computed(() => {
+                if (categoriaActual.value === 'Todos') {
+                    return productos.value; // Si es "Todos", muestra el arreglo completo
+                }
+                // Si es otra cosa, filtra las prendas cuya "categoria" sea igual a la "categoriaActual"
+                return productos.value.filter(prenda => prenda.categoria === categoriaActual.value);
+            });
+
+            // Exponemos las variables para que el HTML pueda usarlas
+            return {
+                categoriaActual,
+                categorias,
+                productosFiltrados
+            };
+        }
+    }).mount('#app');
+</script>
+
+</body>
+</html>
