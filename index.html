@@ -294,10 +294,10 @@
     createApp({
         setup() {
             // Variable que guarda la categoría que el cliente está viendo (Por defecto "Todos")
-            const categoriaActual = ref('Todos');
+            const categoriaActual = ref('Lo más reciente');
 
             // Arreglo con los nombres de las categorías para los botones
-            const categorias = ['Todos', 'Vestidos', 'Trajes', 'Conjuntos', 'Pantalones', 'Camisas'];
+            const categorias = ['Lo más reciente', 'Vestidos', 'Trajes', 'Conjuntos', 'Pantalones', 'Camisas'];
 
             // NUESTRA BASE DE DATOS (Arreglo JSON con la ropa)
             const productos = ref([
@@ -308,50 +308,50 @@
                     precio: '45.00',
                     // Aquí debes poner el enlace modificado de tu foto de Google Drive
                     // Ejemplo: 'https://lh3.googleusercontent.com/d/1A2B3C4D5E6F...'
-                    imagen: 'https://placehold.co/600x800/e5dfd5/5c5c5c?text=Foto+Drive:+Vestido+1' 
+                    imagen: 'https://i.postimg.cc/Wzx3Lfb6/IMG-20260702-195018.jpg' 
                 },
                 {
                     id: 2,
                     nombre: 'Traje Sastre Beige',
                     categoria: 'Trajes',
                     precio: '120.00',
-                    imagen: '/Imagenes/d024600d5160874957841e6e426e65fb.jpg'
+                    imagen: 'https://i.postimg.cc/Dyb0dFxT/IMG-20260702-191210.jpg'
                 },
                 {
                     id: 3,
                     nombre: 'Conjunto Lino Verano',
                     categoria: 'Conjuntos',
                     precio: '65.00',
-                    imagen: '/Imagenes/images.jpg'
+                    imagen: 'https://i.postimg.cc/Dyb0dFxT/IMG-20260702-191210.jpg'
                 },
                 {
                     id: 4,
                     nombre: 'Pantalón Palazzo Negro',
                     categoria: 'Pantalones',
                     precio: '35.00',
-                    imagen: 'https://i.postimg.cc/3RysVV4N/images.jpg'
+                    imagen: 'https://i.postimg.cc/mgCcRR99/IMG-20260702-200407.jpg'
                 },
                 {
                     id: 5,
                     nombre: 'Camisa Seda Blanca',
                     categoria: 'Camisas',
                     precio: '40.00',
-                    imagen: 'https://placehold.co/600x800/e5dfd5/5c5c5c?text=Foto+Drive:+Camisa'
+                    imagen: 'https://i.postimg.cc/L5GXK063/IMG-20260702-194608.jpg'
                 },
                 {
                     id: 6,
                     nombre: 'Vestido Noche Esmeralda',
                     categoria: 'Vestidos',
                     precio: '89.00',
-                    imagen: 'https://placehold.co/600x800/e5dfd5/5c5c5c?text=Foto+Drive:+Vestido+2'
+                    imagen: 'https://i.postimg.cc/Kzv4nMH0/IMG-20260702-195845.jpg'
                 }
             ]);
 
             // LA MAGIA DEL FILTRADO
             // Esta función revisa qué botón se presionó y devuelve solo la ropa correspondiente
             const productosFiltrados = computed(() => {
-                if (categoriaActual.value === 'Todos') {
-                    return productos.value; // Si es "Todos", muestra el arreglo completo
+                if (categoriaActual.value === 'Los más recientes') {
+                    return productos.value.slice(0, 6); // esto mostra un toatal 6  de los mas nuevo
                 }
                 // Si es otra cosa, filtra las prendas cuya "categoria" sea igual a la "categoriaActual"
                 return productos.value.filter(prenda => prenda.categoria === categoriaActual.value);
