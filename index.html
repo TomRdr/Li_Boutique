@@ -366,7 +366,7 @@
             // LA MAGIA DEL FILTRADO
             // Esta función revisa qué botón se presionó y devuelve solo la ropa correspondiente
             const productosFiltrados = computed(() => {
-                if (categoriaActual.value === 'Los más reciente') {
+                if (categoriaActual.value.includes('Lo más')) {
                     return productos.value.slice(0, 6); // esto mostra un toatal 6  de los mas nuevo
                 }
                 // Si es otra cosa, filtra las prendas cuya "categoria" sea igual a la "categoriaActual"
